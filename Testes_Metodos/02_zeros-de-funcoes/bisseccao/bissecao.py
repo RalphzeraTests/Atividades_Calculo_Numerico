@@ -1,5 +1,4 @@
 from random import randint
-import re
 import numpy as np
 from tqdm import tqdm
 
@@ -61,7 +60,7 @@ if __name__ =="__main__":
     err = float(input("erro maximo = "))
     is_guess = str(input("Deseja fornecer os valores iniciais? s/n ")).lower()
     if(is_guess == "n"):
-        x1,x2 = _get_initial_guess(1,0,-3)
+        x1,x2 = _get_initial_guess(a,b,c)
     else:
         x1 = float(input("x1 = "))
         x2 = float(input("x2 = "))
