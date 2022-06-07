@@ -57,6 +57,9 @@ def find_root_regula_falsi(a,b,c,d,ini_guess,eps):
     else:
         x1 = xn_ant
     # |xn  – x(n-1)| <= erro , ou | f(xn ) | <= erro
+    
+    print('    N° de iteração     |     x     |        Tolerância alcançada        |')
+    its = 0
     while(True):
         #   Xns = (af(b) - bf(a))/(f(b)-f(a))
         xns = (x1*_calc_fx(a,b,c,d,x2)-x2*_calc_fx(a,b,c,d,x1))/(_calc_fx(a,b,c,d,x2)-_calc_fx(a,b,c,d,x1))
@@ -64,11 +67,35 @@ def find_root_regula_falsi(a,b,c,d,ini_guess,eps):
             x2 = xns
         else:
             x1 = xns
+        
+        err = f'{math.sqrt((xns - xn_ant)**2):.4f} ou {math.sqrt((_calc_fx(a,b,c,d,xns)**2)):.4f}'
+        its+=1
+        out = "   "
+        n_i = len(str(its))
+        sp_c = 20 - n_i
+        out = out + str(its)
+        for i in range(sp_c):
+            out = out + " "
+        out = out + f'|  {xns:.4f}   |'
+        n_t = len((err))
+        sp_c = 12
+        out = out + "        " + f'{err}'
+        for i in range(sp_c):
+            out = out + " "
+        out = out+"|"
+        print(out)
         if(math.sqrt((xns - xn_ant)**2)<= eps or math.sqrt((_calc_fx(a,b,c,d,xns)**2))<=eps):
             
             xn_ant = xns
             break
         xn_ant = xns
+        
+        
+    
+    print(f'\n\nNúmero de iterações efetuadas: {its}')
+    print(f'Intervalo considerado: [{ini_guess}]')
+    print(f'Resultado final x`: {xn_ant:.4f}')
+    print(f'f(x`): {_calc_fx(a,b,c,d,xn_ant):.4f}')
     return xn_ant
 if __name__ == "__main__":
     print("Digite os parametros da equação a ser analisada no molde ax3 + bx2 + cx + d")
@@ -85,7 +112,6 @@ if __name__ == "__main__":
         x1 = float(input("x1 = "))
         x2 = float(input("x2 = "))
     root = find_root_regula_falsi(a,b,c,d,(x1,x2),err)
-    print(f'Raiz aproximada: {root}')
 
 # Exemplo 3:
 # Calcular a raiz positiva da equação f(x) = x3 –9*x + 3, com ε <= 0,001

@@ -23,16 +23,65 @@
 
 
 # Adicione no return o calculo da função que deseja ser calculada a raiz
-def get_func_val(x):
-    return (x**2 -2)
+# aqui nõ vai ser passado como parametro os coeficientes pois será definida uma finção para a derivada também, desta forma fica possivel equações não lineares
+import math
+import sndhdr
+
+
+def f(x):
+    return (x**3 - x -1)
+
+def df(x):
+    return 3*(x**2) - 1
+
 
 def get_root_newton(ini_pos,eps):
     x1,x2 = ini_pos
-    err = 0
-    print(get_func_val(x1))
+    its = 0
+    xn = x1
+    
+    print('    N° de iteração     |       x       |   Tolerância alcançada   |')
+    while(True):
+        xn1 = xn -f(xn)/df(xn)
+        err = abs(f(xn1))
+        its+=1
+        out = "   "
+        n_i = len(str(its))
+        sp_c = 20 - n_i
+        out = out + str(its)
+        for i in range(sp_c):
+            out = out + " "
+
+        s_xn = f'{xn:.4f}'
+        sp_c = 12 - len(s_xn)
+        out = out + "|   " + s_xn
+        for i in range(sp_c):
+            out = out + " "
+        s_err = f'{err:.4f}'
+        n_t = len((s_err))
+        sp_c = 18 - n_t
+        out = out + "|        " + s_err
+        for i in range(sp_c):
+            out = out + " "
+        out = out+"|"
+        print(out)
+        if(err<eps):
+            break
+        xn = xn1
+    
+
+
+    
+    print(f'\n\nf`(x): 3x^2 - 1')
+    print(f'f``(x): 6x')
+    print(f'Número de iterações efetuadas: {its}')
+    print(f'Valor Inicial: {ini_pos[0]}')
+    print(f'Resultado final x`: {xn:.4f}')
+    print(f'f(x`): {f(xn):.4f}')
+    return xn
 
 if __name__ == "__main__":
-    get_root_newton((0,1),0.001)
+    get_root_newton((-5,5),0.001)
 
 
 
