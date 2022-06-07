@@ -51,11 +51,7 @@ def _get_initial_guess(a,b,c,d):
 def find_root_regula_falsi(a,b,c,d,ini_guess,eps):
     print(ini_guess)
     x1,x2 = ini_guess
-    xn_ant = (x1*_calc_fx(a,b,c,d,x2)-x2*_calc_fx(a,b,c,d,x1))/(_calc_fx(a,b,c,d,x2)-_calc_fx(a,b,c,d,x1))
-    if(_calc_fx(a,b,c,d,x1)*_calc_fx(a,b,c,d,xn_ant)<0):
-        x2 = xn_ant
-    else:
-        x1 = xn_ant
+    xn_ant = x1
     # |xn  – x(n-1)| <= erro , ou | f(xn ) | <= erro
     
     print('    N° de iteração     |     x     |        Tolerância alcançada        |')
