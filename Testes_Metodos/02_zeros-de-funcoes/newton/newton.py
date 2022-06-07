@@ -28,6 +28,7 @@ def get_func_val(x):
 
 def get_root_newton(ini_pos,eps):
     x1,x2 = ini_pos
+    err = 0
     print(get_func_val(x1))
 
 if __name__ == "__main__":

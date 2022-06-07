@@ -1,6 +1,7 @@
 from random import randint
 import numpy as np
 from tqdm import tqdm
+import math
 
 # O método da bisseção é um método de confinamento usado para se obter a solução de uma equação na forma f(x) = 0 quando se sabe que dentro de um dado intervalo [a, b]:
 # – f(x) é contínua
@@ -16,10 +17,13 @@ from tqdm import tqdm
 # Se a solução numérica não for suficientemente precisa, define-se um novo intervalo que contenha a solução exata, e seu ponto central é escolhido como a nova (segunda) estimativa da solução numérica.
 # O processo continua até que a solução numérica seja suficientemente precisa de acordo com o critério selecionado.
 
+# Numero de iterações
+# k>(log(b0−a0)−log( ε))/log(2)
+# Se k satisfaz essa relação, ao final da iteração k teremos o intervalo [a, b] que contém a raiz com a precisão ε desejada.
 
 
-def _calc_fx(a,b,c,x):
-    return a*x*x + b*x + c
+def _calc_fx(a,b,c,d,x):
+    return a*(x**3) + b*(x**2) + c*x + d
 
 def _get_initial_guess(a,b,c):
     x1 = randint(-100,100)
@@ -37,19 +41,41 @@ def _get_initial_guess(a,b,c):
         return x2,x1
 # Entradas a,b,c são definidas pela equação:
 # a*x^2 + b*x + c
-def find_root_bissec(a,b,c,ini_guess,err):
+def find_root_bissec(a,b,c,d,ini_guess,err):
+    
     x1,x2 = ini_guess
-    print(x1,x2)
+    k = (math.log(x2-x1) - math.log(err))/math.log(2)
     eps = (x2-x1)/2
+    its = 0
+    print('    N° de iteração     |     x     |   Tolerância alcançada   |')
     while(eps>err):
         x_ns1 =(x1+x2)/2
-        if(_calc_fx(a,b,c,x1)*_calc_fx(a,b,c,x_ns1)<0):
+        if(_calc_fx(a,b,c,d,x1)*_calc_fx(a,b,c,d,x_ns1)<0):
             x2 = x_ns1
         else:
             x1 = x_ns1
         eps = (x2-x1)/2
-    
-    x_ns1 =(x1+x2)/2
+        its+=1
+        out = "   "
+        n_i = len(str(its))
+        sp_c = 20 - n_i
+        out = out + str(its)
+        for i in range(sp_c):
+            out = out + " "
+        out = out + f'|  {x_ns1:.4f}   |'
+        n_t = len(str(eps))
+        sp_c = 12
+        out = out + "        " + f'{eps:.4f}'
+        for i in range(sp_c):
+            out = out + " "
+        out = out+"|"
+        print(out)
+
+    print(f'\n\nNúmero de iterações estipulado: {k:.4f}') 
+    print(f'Número de iterações efetuadas: {its}')
+    print(f'Intervalo considerado: [{ini_guess}]')
+    print(f'Resultado final x`: {x_ns1:.4f}')
+    print(f'f(x`): {_calc_fx(a,b,c,d,x_ns1):.4f}')
     return x_ns1
 
 if __name__ =="__main__":
@@ -57,15 +83,15 @@ if __name__ =="__main__":
     a = float(input("a = "))
     b = float(input("b = "))
     c = float(input("c = "))
+    d = float(input("d = "))
     err = float(input("erro maximo = "))
     is_guess = str(input("Deseja fornecer os valores iniciais? s/n ")).lower()
     if(is_guess == "n"):
-        x1,x2 = _get_initial_guess(a,b,c)
+        x1,x2 = _get_initial_guess(a,b,c,d)
     else:
         x1 = float(input("x1 = "))
         x2 = float(input("x2 = "))
-    x_r = find_root_bissec(a,b,c,(x1,x2),err)
-    print(f'Raiz aproximada: {x_r}')
+    x_r = find_root_bissec(a,b,c,d,(x1,x2),err)
 # Exemplo 1:
 # Calcular a raiz positiva da equação f(x) = x2 – 3, com ε <= 0,01
 #       1.73638916015625
