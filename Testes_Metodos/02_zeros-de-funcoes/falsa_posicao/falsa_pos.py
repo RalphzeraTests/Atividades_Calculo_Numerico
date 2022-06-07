@@ -68,7 +68,7 @@ def find_root_regula_falsi(a,b,c,d,ini_guess,eps):
         else:
             x1 = xns
         
-        err = f'{math.sqrt((xns - xn_ant)**2):.4f} ou {math.sqrt((_calc_fx(a,b,c,d,xns)**2)):.4f}'
+        err = f'{abs((xns - xn_ant)):.4f} ou {abs((_calc_fx(a,b,c,d,xns))):.4f}'
         its+=1
         out = "   "
         n_i = len(str(its))
@@ -84,7 +84,7 @@ def find_root_regula_falsi(a,b,c,d,ini_guess,eps):
             out = out + " "
         out = out+"|"
         print(out)
-        if(math.sqrt((xns - xn_ant)**2)<= eps or math.sqrt((_calc_fx(a,b,c,d,xns)**2))<=eps):
+        if(abs((xns - xn_ant))<= eps or abs((_calc_fx(a,b,c,d,xns)))<=eps):
             
             xn_ant = xns
             break
